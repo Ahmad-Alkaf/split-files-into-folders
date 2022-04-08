@@ -9,8 +9,8 @@ var GB = 1024 * MB;
 //!   tsc index.ts
 //!after that:
 //!   node index.js
-const config: Config = {
-   path: `C:\\Users\\Ahmed\\Desktop\\Tests Folder\\test`,//`S:\\VIDEOS\\Bozeman Science`,
+const config: Config = {//hover to read docs
+   path: `C:\\Users\\Ahmed\\Desktop\\blah`,
    subFiles: 4,
    subSize: 1.5 * GB,  //! Ex:'2 GB' typed as '2 * GB'
    orderBy: 'random',
@@ -35,8 +35,8 @@ async function main() {
       info.totalFiles++;
    }
    if (info.totalFiles == 0 || info.totalFiles <= config.subFiles)
-      throw new Error(`Total files found '${info.totalFiles}' ${info.totalFiles == 0 ? '' : '. But, you make ' + config.subFiles + ' files limit for each subFolder!'}`)
-   var filesNameArr = await fs.readdir(config.path);//arr of files name
+      throw new Error(`Total files found '${info.totalFiles}' ${info.totalFiles == 0 ? '' : '. But, you set ' + config.subFiles + ' files limit for each subFolder!'}`)
+   var filesNameArr = await fs.readdir(config.path);//array of files name
 
    if (config.orderBy == 'random')
       filesNameArr.sort(random).sort(random).sort(random).sort(random).sort(random).sort(random);//wast of power OR very random? :)
@@ -74,7 +74,7 @@ async function main() {
 
 function print(info): void {
    console.table({
-      'In Folder': '.../' + info.mainFolderName,
+      'In Folder': info.mainFolderName,
       'Founded Files': info.totalFiles,
       'Made Folders': info.totalFolders,
    })
@@ -128,7 +128,8 @@ function dirSize(path: string): Promise<number> {
 
 
 /**
- * used as parameter on build-in sort function for arrays
+ * used as parameter on build-in sort function for arrays.
+ * sort files name as string is not perfect because of how string handle numbers
  */
 function AlphaIntSort(a: string, b: string) {
    a = a.substring(0, a.lastIndexOf('.'));
@@ -189,16 +190,9 @@ interface MyFile {
 
 
 
-async function test() {
-
-   // if (a.match(/[0-9]/) && b.match(/[0-9]/))
-   //    return Number(a.match(/(\d+)/g)[0]) - Number(b.match(/(\d+)/g)[0]);
-   // var arr=['ab','a','q','w','E','r','t','y','u','i','o','p','A','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m','1','10','2','99','9','a9','a10',]
-   console.log('main() executed')
-}
-
 
 /**
+  plan...
  * make two files as cache files 1-cacheTs.txt 2-cacheJs.txt
  * 1- will save typescript file txt 2- js
  * to prevent saving all files as txt we can hash them to save just 256-bit if file change then hash will change. So, same functionality but less space
@@ -255,9 +249,8 @@ const wrapper = (async () => {
       let compiled: string | boolean = await isTypescriptCompiled();
       if (typeof compiled !== 'boolean' || compiled === false)
          throw new Error(`Compile TypeScript File Before Run JavaScript! ${compiled || ''}`)
-      false ?
-         await main() :
-         await test();
+  
+      await main()
       console.timeEnd('process Time');
    } catch (e) {
       console.timeEnd('process Time');
