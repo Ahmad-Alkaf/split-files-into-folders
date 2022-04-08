@@ -1,0 +1,8 @@
+{
+    "compilerOptions":{
+        "target":"esnext", //was es6
+        "watch":true,
+        "module": "es2015",
+        "lib":["dom","es2017"],
+    }
+}
